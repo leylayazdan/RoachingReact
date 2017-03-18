@@ -72,7 +72,7 @@ class FoodSearch extends React.Component {
                     <input
                       className='prompt'
                       type='text'
-                      placeholder='Search foods...'
+                      placeholder='Search food items...'
                       value={this.state.searchValue}
                       onChange={this.handleSearchChange}
                     />
