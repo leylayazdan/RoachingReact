@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import SelectedFoods from './SelectedFoods';
 import FoodSearch from './FoodSearch';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import SignUpModal from './components/sign-up-modal';
 
 class App extends Component {
+  constructor() {
+    super();
+
+    injectTapEventPlugin();
+  }
+
   state = {
     selectedFoods: [],
   }
@@ -25,6 +33,9 @@ class App extends Component {
     return (
       <div className='App'>
         <div className='ui text container'>
+          <SignUpModal
+
+          />
           <SelectedFoods
             foods={selectedFoods}
             onFoodClick={this.removeFoodItem}
