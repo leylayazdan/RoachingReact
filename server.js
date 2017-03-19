@@ -24,6 +24,89 @@ const COLUMNS = [
   'kcal',
   'description',
 ];
+
+//FOOD
+//GET food item suggestions from foodTable
+app.get('/foodSuggestions', function(req, res){
+    try{
+        // Get a Postgres client from the connection pool
+        pg.connect(connectionString, function(err, client, done) {
+            // Handle connection errors
+            if(err) {
+                done();
+                console.log(err);
+                return res.status(500).json({ success: false, data: err});
+            }
+
+            const foodItems = [];
+
+            //CHANGE THE BELOW QUERY
+            var query = client.query("SELECT name FROM healthi.foodItem;" );
+
+            query.on('row', function(row) {
+                foodItems.push( row );
+            });
+
+            query.on('end', function() {
+                res.send(foodItems);
+            });
+
+            query.on('error', function(err) {
+                console.log(err);
+                res.status(500).json({ success: false, data: err});
+                done();
+            });
+        });
+    } catch (ex) {
+        callback(ex);
+    }
+});
+
+//USER LOGIN
+app.post('/userPref', function(req, res){
+    try{
+        //ANNA PUT YOUR STUFF HERE
+    } catch (ex) {
+        callback(ex);
+    }
+});
+
+
+//USER
+//posting each preference for food on SIGNUP for USER
+//save things as JSON object, which we can stringify and SAVE in table, then when retrieved
+//it can be turned back into a json object
+app.post('/userPref', function(req, res){
+    try{
+        // Grab data from http request
+        var data = {faveCuisine: req.body.faveCuisine,
+                    dietRestriction: req.body.dietRestriction,
+                    dietGoals: req.body.dietGoals};
+        // Get a Postgres client from the connection pool
+        pg.connect(connectionString, function(err, client, done) {
+            // Handle connection errors
+            if(err) {
+                done();
+                console.log(err);
+                return res.status(500).json({ success: false, data: err});
+            }
+            // Insert food preference for user
+            client.query("INSERT INTO healthi.user.foodPref(name, balance) VALUES($1, $2);", [data.faveCuisine,
+                                                                                      data.dietRestriction,
+                                                                                      data.dietGoals], function (err, result) {
+                done();
+                res.send();
+                if (err) {
+                    return console.error('error happened during query', err)
+                }
+            });
+        });
+    } catch (ex) {
+        callback(ex);
+    }
+});
+
+
 app.get('/api/food', (req, res) => {
   const param = req.query.q;
 
