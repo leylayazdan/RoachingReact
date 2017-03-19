@@ -54,7 +54,7 @@ class App extends Component {
 
 
   render() {
-    
+
     var sectionStyle = {
       height: "700px",
       backgroundSize: "cover",
@@ -62,11 +62,11 @@ class App extends Component {
       overflow: "hidden",
       backgroundImage: "url(" + Background + ")"
     };
-    
+
     var buttonStyles = {
       paddingBottom: '20px',
       textAlign: 'center'
-    }
+    };
 
     return (
       <div className='App'>
