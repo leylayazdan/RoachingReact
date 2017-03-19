@@ -49,30 +49,31 @@ var config = {
 
 //FOOD
 //GET food item suggestions from foodTable
-app.get('/foodSuggestions', function(req, res){
+app.get('/foodItemData', function(req, res){
     try{
-        console.log( 'call food suggestions!!!!' );
         // Get a Postgres client from the connection pool
         pg.connect( config, function(err, client, done) {
             // Handle connection errors
-            if(err) {
-                done();
-                console.log(err);
-                return res.status(500).json({ success: false, data: err});
-            }
+            query.on( 'error', ( err )=>{
 
-            const foodItems = [];
+                return res.status( 500 ).json( { success: false, statusText: 'application error' } );
+
+            });
+
+            const foodInfo = [];
 
             //CHANGE THE BELOW QUERY
-            var query = client.query("SELECT name FROM healthi.foodItem;" );
+            var query = client.query( `SELECT f.name, r.name, f.fatGram, f.proteinGram, f.carbGram, f.calories, f.sodium, r.location
+                                        FROM healthi.restaurant r, healthi.foodItem f
+                                        WHERE r.rid = f.rid` );
 
             query.on('row', function(row) {
-                foodItems.push( row );
+                foodInfo.push( row );
             });
 
             query.on('end', function() {
                 console.log( 'foodItems:', JSON.stringify( foodItems ) );
-                res.send(foodItems);
+                res.send(foodInfo);
             });
 
             query.on('error', function(err) {
@@ -131,46 +132,48 @@ app.post('/userPref', function(req, res){
     }
 });
 
-app.get('/api/food', (req, res) => {
-  const param = req.query.q;
 
-  if (!param) {
-    res.json({
-      error: 'Missing required parameter `q`',
-    });
-    return;
-  }
 
-  // WARNING: Not for production use! The following statement
-  // is not protected against SQL injections.
-  const r = db.exec(`
-    select ${COLUMNS.join(', ')} from entries
-    where description like '%${param}%'
-    limit 100
-  `);
-
-  if (r[0]) {
-    res.json(
-      r[0].values.map((entry) => {
-        const e = {};
-        COLUMNS.forEach((c, idx) => {
-          // combine fat columns
-          if (c.match(/^fa_/)) {
-            e.fat_g = e.fat_g || 0.0;
-            e.fat_g = (
-              parseFloat(e.fat_g, 10) + parseFloat(entry[idx], 10)
-            ).toFixed(2);
-          } else {
-            e[c] = entry[idx];
-          }
-        });
-        return e;
-      }),
-    );
-  } else {
-    res.json([]);
-  }
-});
+// app.get('/food', (req, res) => {
+//   const param = req.query.q;
+//
+//   if (!param) {
+//     res.json({
+//       error: 'Missing required parameter `q`',
+//     });
+//     return;
+//   }
+//
+//   // WARNING: Not for production use! The following statement
+//   // is not protected against SQL injections.
+//   const r = db.exec(`
+//     select ${COLUMNS.join(', ')} from entries
+//     where description like '%${param}%'
+//     limit 100
+//   `);
+//
+//   if (r[0]) {
+//     res.json(
+//       r[0].values.map((entry) => {
+//         const e = {};
+//         COLUMNS.forEach((c, idx) => {
+//           // combine fat columns
+//           if (c.match(/^fa_/)) {
+//             e.fat_g = e.fat_g || 0.0;
+//             e.fat_g = (
+//               parseFloat(e.fat_g, 10) + parseFloat(entry[idx], 10)
+//             ).toFixed(2);
+//           } else {
+//             e[c] = entry[idx];
+//           }
+//         });
+//         return e;
+//       }),
+//     );
+//   } else {
+//     res.json([]);
+//   }
+// });
 
 app.post( '/logIn', function( req, res ){
 
