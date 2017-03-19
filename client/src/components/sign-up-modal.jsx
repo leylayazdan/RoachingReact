@@ -70,7 +70,9 @@ class SignUpComponent extends React.Component {
         return fetch(`http://localhost:3001/sign-up`, {
             method: 'post',
             body: JSON.stringify({
-                email: 'hey'
+                email: this.state.email,
+                username: this.state.username,
+                password: this.state.password
             }),
             headers: {
                 'Content-Type': 'application/json'

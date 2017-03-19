@@ -1,13 +1,15 @@
 const express = require('express');
 const fs = require('fs');
 const sqlite = require('sql.js');
+const uuid = require( 'uuid' );
 
 const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 
 const db = new sqlite.Database(filebuffer);
 
 const app = express();
-const bodyParser = require( 'body-parser')
+const bodyParser = require( 'body-parser');
+
 
 // Require the driver.
 var pg = require('pg');
@@ -174,15 +176,43 @@ app.get('/api/food', (req, res) => {
   }
 });
 
-app.post( '/sign-up', (req, res)=> {
-        console.log( 'sign up');
-        //passport.authenticate('local-signup', {
-            //successRedirect: '/',
-            //failureRedirect: '/sign-up'
-        //});
-    console.log( JSON.stringify( req.body ));
-        return res.status(400).json({success: true, data: 'hello'}).send();
+app.post( '/sign-up', function( req, res ){
+
+
+    const id = uuid.v4();
+    const username = req.body.username;
+    const password = req.body.password;
+
+    pg.connect( config, function( err, client, done ){
+
+       var query = client.query( `INSERT INTO healthi.user VALUES ('${id}','${username}','${password}', null, null, null, null);`);
+
+       query.on( 'error',( err )=>{
+
+           console.log( err );
+
+           if( err )
+            return res.status(500).json({ success: false, statusText: err } );
+
+           } );
+
+       let retVal;
+
+      query.on('row', (row)=>{
+
+           retVal = row;
+       });
+
+      query.on('end',()=>{
+
+            res.status( 200 ).json({ success: true, data: retVal ? retVal : {} });
+        })
+
+    });
     }
+/*    console.log( JSON.stringify( req.body ));
+        return res.status(400).json({success: true, data: 'hello'}).send();*/
+
 );
 
 app.listen(app.get('port'), () => {

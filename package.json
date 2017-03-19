@@ -9,12 +9,14 @@
     "express": "4.13.3",
     "fs": "0.0.2",
     "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "passport-login": "0.0.0",
     "pg": "^6.1.4",
     "react-router-dom": "^4.0.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
-    "sql.js": "0.3.2"
+    "sql.js": "0.3.2",
+    "uuid": "^3.0.1"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
