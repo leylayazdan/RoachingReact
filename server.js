@@ -3,10 +3,6 @@ const fs = require('fs');
 const sqlite = require('sql.js');
 const uuid = require( 'uuid' );
 
-const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
-
-const db = new sqlite.Database(filebuffer);
-
 const app = express();
 const bodyParser = require( 'body-parser');
 
@@ -176,6 +172,51 @@ app.get('/api/food', (req, res) => {
   }
 });
 
+app.post( '/logIn', function( req, res ){
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    pg.connect( config, function( err, client, done ){
+
+        var query = client.query( `SELECT * FROM healthi.user where username='${username}';` );
+
+        query.on( 'error', ( err )=>{
+
+            return res.status( 500 ).json( { success: false, statusText: 'application error' } );
+
+        });
+
+        let user;
+
+        query.on( 'row', ( row )=>{
+
+            user = row;
+
+        } );
+
+        query.on( 'end', ()=>{
+
+            if( !user ){
+
+                return res.status( 500 ).json( { success: false, statusText: 'user does not exist' } );
+            }
+
+            console.log( user.password );
+            console.log( password );
+            if( user.password === password ){
+
+                return res.status(200).json({ success: true, statusText: 'successfully logged in', user: user } );
+            } else {
+
+                return res.status(500).json({ success: false, statusText: 'password incorrect'} );
+            }
+
+        } )
+    })
+
+});
+
 app.post( '/sign-up', function( req, res ){
 
 
@@ -191,8 +232,10 @@ app.post( '/sign-up', function( req, res ){
 
            console.log( err );
 
-           if( err )
-            return res.status(500).json({ success: false, statusText: err } );
+           if( err.code === '23505' )
+            return res.status(500).json( { success: false, statusText: 'username taken' } );
+           else
+            return res.status(500).json( { success: false, statusText: 'application error'})
 
            } );
 
@@ -205,7 +248,7 @@ app.post( '/sign-up', function( req, res ){
 
       query.on('end',()=>{
 
-            res.status( 200 ).json({ success: true, data: retVal ? retVal : {} });
+            res.status( 200 ).json({ success: true, user: retVal ? retVal : { id, username, password } });
         })
 
     });
