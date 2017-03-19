@@ -32,7 +32,7 @@ class LoginComponent extends React.Component {
     };
 
     handleSubmit = () => {
-        this.props.loggedIn();
+        //this.props.loggedIn();
         // put endpoint in uri
         /*
         var options = {
@@ -52,6 +52,29 @@ class LoginComponent extends React.Component {
             .catch(function (err) {
                 this.setState({open: true});
             }); */
+
+        return fetch(`/logIn`, {
+            method: 'post',
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (resp) {
+            if (resp.status === 200) {
+                return resp.json();
+            } else {
+                throw new Error(`HTTP Error ${resp.statusText}`);
+            }
+        })
+            .then(function (data) {
+                console.log(data);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     };
 
     render () {
