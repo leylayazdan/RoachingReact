@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import SelectedFoods from './SelectedFoods';
 import FoodSearch from './FoodSearch';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SignUpModal from './components/sign-up-modal';
+import LoginModal from './components/login-modal';
 
 class App extends Component {
   constructor() {
@@ -11,6 +13,7 @@ class App extends Component {
     injectTapEventPlugin();
   }
 
+  /*
   state = {
     selectedFoods: [],
   }
@@ -33,9 +36,7 @@ class App extends Component {
     return (
       <div className='App'>
         <div className='ui text container'>
-          <SignUpModal
-
-          />
+          <MuiThemeProvider><SignUpComponent /></MuiThemeProvider>
           <SelectedFoods
             foods={selectedFoods}
             onFoodClick={this.removeFoodItem}
@@ -45,6 +46,28 @@ class App extends Component {
           />
         </div>
       </div>
+    );
+  } */
+
+  render() {
+    var buttonStyles = {
+      paddingBottom: '20px',
+      textAlign: 'center'
+    }
+
+    return (
+        <div className='App'>
+          <div className='ui text container'>
+            <div className="Buttons">
+              <MuiThemeProvider>
+                <div className="SignUpModal" style={buttonStyles}><SignUpModal /></div>
+              </MuiThemeProvider>
+              <MuiThemeProvider>
+                <div className="LoginModal" style={buttonStyles}><LoginModal /></div>
+              </MuiThemeProvider>
+            </div>
+          </div>
+        </div>
     );
   }
 }
