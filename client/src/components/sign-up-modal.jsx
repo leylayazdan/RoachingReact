@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
+import rp from 'request-promise';
 
 class SignUpComponent extends React.Component {
 
@@ -10,7 +11,8 @@ class SignUpComponent extends React.Component {
         email: "",
         open: false,
         password: "",
-        username: ""
+        username: "",
+        error: ""
     };
 
     onPasswordChange(e) {
@@ -36,6 +38,28 @@ class SignUpComponent extends React.Component {
         this.setState({open: false});
     };
 
+    handleSubmit = () => {
+        // put endpoint in uri
+        var options = {
+            method: 'POST',
+            uri: 'http://api.posttestserver.com/post',
+            body: {
+                email: this.state.email,
+                username: this.state.username,
+                password: this.state.password
+            },
+            json: true // Automatically stringifies the body to JSON
+        };
+
+        rp(options)
+            .then(function (parsedBody) {
+                this.setState({open: false});
+            })
+            .catch(function (err) {
+                this.setState({open: true});
+        });
+    };
+
     render () {
         const actions = [
             <FlatButton
@@ -46,31 +70,32 @@ class SignUpComponent extends React.Component {
             <FlatButton
                 label="Submit"
                 primary={true}
-                disabled={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleSubmit}
             />,
         ];
 
         return (
            <div className='SignUpComponent'>
                <RaisedButton
-                   buttonStyle={{paddingLeft: '10px', paddingRight: '10px', paddingTop: '10px', paddingBottom: '10px', height: '110%', backgroundColor:'#A11F45'}}
+                   buttonStyle={{paddingLeft: '10px', paddingRight: '10px', paddingTop: '10px', paddingBottom: '10px', height: '110%', backgroundColor:'#E7C100', borderRadius: '7px'}}
                    labelStyle={{fontSize:'30px', fontFamily:'Helvetica Neue', textTransform: 'capitalize', fontWeight:'600'}}
                    label='Get Started'
                    onTouchTap={this.handleOpen}
                    primary={true}
+                   style={{borderRadius: '7px'}}
                />
                <Dialog
-                   title={'Lets get you eating smart!'}
+                   contentStyle={{width:'500px'}}
+                   title={'Lets get you to Eat Smart!'}
                    titleClassName={'setUpModalTitle'}
                    titleStyle={{fontSize: '24px', fontFamily:'Helvetica Neue'}}
                    actions={actions}
                    modal={true}
                    open={this.state.open}
-                   style={{width:'700px', marginLeft:'80px'}}
                >
                <TextField
                    hintText="youremail@email.com"
+                   errorText={this.state.error}
                    floatingLabelText="Enter your email"
                    fullWidth={true}
                    type="text"
@@ -100,9 +125,5 @@ class SignUpComponent extends React.Component {
 }
 
 SignUpComponent.displayName = 'SignUpComponent';
-
-SignUpComponent.sentences = {
-    headerTitle: 'Welcome! Lets get you started'
-};
 
 module.exports = SignUpComponent;
