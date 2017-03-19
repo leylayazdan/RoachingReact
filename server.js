@@ -54,33 +54,29 @@ app.get('/foodItemData', function(req, res){
         // Get a Postgres client from the connection pool
         pg.connect( config, function(err, client, done) {
             // Handle connection errors
-            query.on( 'error', ( err )=>{
 
-                return res.status( 500 ).json( { success: false, statusText: 'application error' } );
-
-            });
 
             const foodInfo = [];
 
             //CHANGE THE BELOW QUERY
-            var query = client.query( `SELECT f.name, r.name, f.fatGram, f.proteinGram, f.carbGram, f.calories, f.sodium, r.location
+            var query = client.query( `SELECT f.name as foodName, r.name as restaurantName, f.fatGram, f.proteinGram, f.carbGram, f.calories, f.sodium, r.location
                                         FROM healthi.restaurant r, healthi.foodItem f
                                         WHERE r.rid = f.rid` );
+
+            query.on( 'error', ( err )=>{
+                console.log(err);
+                return res.status( 500 ).json( { success: false, statusText: err } );
+
+            });
 
             query.on('row', function(row) {
                 foodInfo.push( row );
             });
 
             query.on('end', function() {
-                console.log( 'foodItems:', JSON.stringify( foodItems ) );
-                res.send(foodInfo);
+                return res.send(foodInfo);
             });
 
-            query.on('error', function(err) {
-                console.log(err);
-                res.status(500).json({ success: false, data: err});
-                done();
-            });
         });
     } catch (ex) {
 

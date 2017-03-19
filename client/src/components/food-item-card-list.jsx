@@ -4,15 +4,7 @@ import Divider from 'material-ui/Divider';
 
 export default class FoodItemsCardList extends React.Component {
 
-  constructor(props) {
-    super(props);
-  };
-
   render() {
-
-    var cardListStyle = {
-
-    };
 
     return (
       <div className="FoodItemsCardList">
@@ -32,11 +24,5 @@ export default class FoodItemsCardList extends React.Component {
 }
 
 FoodItemsCardList.displayName = 'FoodItemsCardList';
-
-var {func} = React.PropTypes;
-
-FoodItemsCardList.propTypes = {
-    loggedIn: func.isRequired
-}
 
 module.exports = FoodItemsCardList;
