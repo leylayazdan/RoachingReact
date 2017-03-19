@@ -39,7 +39,9 @@ class SignUpComponent extends React.Component {
     };
 
     handleSubmit = () => {
+        this.props.loggedIn();
         // put endpoint in uri
+        /*
         var options = {
             method: 'POST',
             uri: 'http://api.posttestserver.com/post',
@@ -57,7 +59,7 @@ class SignUpComponent extends React.Component {
             })
             .catch(function (err) {
                 this.setState({open: true});
-        });
+        }); */
     };
 
     render () {
@@ -125,5 +127,11 @@ class SignUpComponent extends React.Component {
 }
 
 SignUpComponent.displayName = 'SignUpComponent';
+
+var {func} = React.PropTypes;
+
+SignUpComponent.propTypes = {
+    loggedIn: func.isRequired
+}
 
 module.exports = SignUpComponent;
