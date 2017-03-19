@@ -10,7 +10,7 @@ export default class FoodItemsCard extends React.Component {
     this.state = {
       expanded: false,
     };
-  }
+  };
 
   handleExpandChange = (expanded) => {
     this.setState({expanded: expanded});
