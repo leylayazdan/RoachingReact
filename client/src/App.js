@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SignUpModal from './components/sign-up-modal';
 import Background from '../assets/healthy_food.jpg';
 import LoginModal from './components/login-modal';
-import FoodItemsCard from './components/food-items-card'
+import FoodItemsCardList from './components/food-item-card-list'
 
 class App extends React.Component {
   constructor(props) {
@@ -103,7 +103,7 @@ class App extends React.Component {
     return (
       <div className="FoodItemsCard">
         <MuiThemeProvider>
-          <FoodItemsCard
+          <FoodItemsCardList
             loggedIn={this.login}
           />
         </MuiThemeProvider>

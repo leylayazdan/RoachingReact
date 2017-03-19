@@ -91,7 +91,6 @@ class SignUpComponent extends React.Component {
         this.props.loggedIn();
         // put endpoint in uri
 
-        /*
         var options = {
             method: 'POST',
             url: 'http://localhost:3001/sign-up',
@@ -138,7 +137,7 @@ class SignUpComponent extends React.Component {
             })
             .catch(function (err) {
                 console.log(err);
-            }); */
+            });
     };
 
     render () {
@@ -244,7 +243,7 @@ SignUpComponent.displayName = 'SignUpComponent';
 var {func} = React.PropTypes;
 
 SignUpComponent.propTypes = {
-    loggedIn: func.isRequired
+    loggedIn: func
 }
 
 module.exports = SignUpComponent;

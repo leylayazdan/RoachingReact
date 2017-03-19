@@ -10,23 +10,35 @@ export default class FoodItemsCard extends React.Component {
     this.state = {
       expanded: false,
     };
-  }
+  };
 
   handleExpandChange = (expanded) => {
     this.setState({expanded: expanded});
   };
 
-  handleToggle = (event, toggle) => {
-    this.setState({expanded: toggle});
-  };
-
   handleExpand = () => {
     this.setState({expanded: true});
+      return fetch('/foodItemData', {
+          method: 'GET'
+      }).then(function (resp) {
+          if (resp.status === 200) {
+              return resp.json();
+          } else {
+              throw new Error(`HTTP Error ${resp.statusText}`);
+          }
+      }).then(function (data) {
+
+          console.log(data);
+      }).catch(function (err) {
+          console.log(err);
+      });
   };
 
   handleReduce = () => {
     this.setState({expanded: false});
   };
+
+
 
   render() {
 
@@ -83,11 +95,5 @@ export default class FoodItemsCard extends React.Component {
 }
 
 FoodItemsCard.displayName = 'FoodItemsCard';
-
-var {func} = React.PropTypes;
-
-FoodItemsCard.propTypes = {
-    loggedIn: func.isRequired
-}
 
 module.exports = FoodItemsCard;

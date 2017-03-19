@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS healthi;
 
 CREATE TABLE IF NOT EXISTS healthi.restaurant(
-    rid         INT PRIMARY KEY,
+    rid         STRING PRIMARY KEY,
     name        STRING,
     location    STRING
 );
@@ -10,21 +10,24 @@ CREATE TABLE IF NOT EXISTS healthi.user (
     id              STRING PRIMARY KEY,
     username        STRING UNIQUE,
     password        STRING,
-    name            STRING,
-    faveCuisine     STRING,
+    email           STRING,
     dietRestriction STRING,
-    dietGoals       STRING
+    dietGoals       STRING,
+    allergens       STRING
 );
 
 CREATE TABLE IF NOT EXISTS healthi.foodItem (
-    id                  INT PRIMARY KEY,
+    id                  STRING PRIMARY KEY,
     name                STRING,
     description         STRING,
-    rid                 INT REFERENCES healthi.restaurant( rid ),
-    fatPercentage       FLOAT,
-    proteinPercentage   FLOAT,
-    carbPercentage      FLOAT,
+    rid                 STRING REFERENCES healthi.restaurant( rid ),
+    fatGram             FLOAT,
+    proteinGram         FLOAT,
+    carbGram            FLOAT,
     calories            FLOAT,
-    sodium              FLOAT
+    sodium              FLOAT,
+    dietRestriction     STRING,
+    allergens           STRING,
+    picURL              STRING
 );
 
