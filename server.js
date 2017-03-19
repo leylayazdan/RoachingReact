@@ -123,12 +123,6 @@ app.post('/userPref', function(req, res){
     }
 });
 
-
-<<<<<<< HEAD
-
-//REMOVE THIS, NOT OUR STUFF BELOW
-=======
->>>>>>> matin
 app.get('/api/food', (req, res) => {
   const param = req.query.q;
 
@@ -169,6 +163,15 @@ app.get('/api/food', (req, res) => {
     res.json([]);
   }
 });
+
+app.post('/sign-up', (req, res)=> {
+        console.log( 'sign up');
+        passport.authenticate('local-signup', {
+            successRedirect: '/',
+            failureRedirect: '/sign-up'
+        });
+    }
+);
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console

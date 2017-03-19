@@ -41,7 +41,7 @@ class SignUpComponent extends React.Component {
     handleSubmit = () => {
         this.props.loggedIn();
         // put endpoint in uri
-        /*
+
         var options = {
             method: 'POST',
             uri: 'http://api.posttestserver.com/post',
@@ -59,7 +59,7 @@ class SignUpComponent extends React.Component {
             })
             .catch(function (err) {
                 this.setState({open: true});
-        }); */
+        });
     };
 
     render () {
