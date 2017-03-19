@@ -31,6 +31,27 @@ class LoginComponent extends React.Component {
         this.setState({open: false});
     };
 
+    handleSubmit = () => {
+        // put endpoint in uri
+        var options = {
+            method: 'POST',
+            uri: 'http://api.posttestserver.com/post',
+            body: {
+                username: this.state.username,
+                password: this.state.password
+            },
+            json: true // Automatically stringifies the body to JSON
+        };
+
+        rp(options)
+            .then(function (parsedBody) {
+                this.setState({open: false});
+            })
+            .catch(function (err) {
+                this.setState({open: true});
+            });
+    };
+
     render () {
         const actions = [
             <FlatButton
@@ -39,9 +60,9 @@ class LoginComponent extends React.Component {
                 onTouchTap={this.handleClose}
             />,
             <FlatButton
-                label="Sign In"
+                label="Log In"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleSubmit}
             />,
         ];
 
