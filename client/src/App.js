@@ -56,7 +56,7 @@ class App extends Component {
   render() {
     
     var sectionStyle = {
-      height: "700px",
+      height: "900px",
       backgroundSize: "cover",
       flex: 1,
       overflow: "hidden",
@@ -72,7 +72,7 @@ class App extends Component {
       <div className='App'>
         <section style={ sectionStyle }>
           <div className='ui text container'>
-            <div className="Buttons">
+            <div className="Buttons" style={{marginTop: '40%'}}>
               <MuiThemeProvider>
                 <div className="SignUpModal" style={buttonStyles}><SignUpModal /></div>
               </MuiThemeProvider>
