@@ -44,7 +44,7 @@ class SignUpComponent extends React.Component {
 
         var options = {
             method: 'POST',
-            uri: 'http://api.posttestserver.com/post',
+            uri: 'localhost:3000/sign-up',
             body: {
                 email: this.state.email,
                 username: this.state.username,

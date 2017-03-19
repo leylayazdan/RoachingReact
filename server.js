@@ -7,7 +7,6 @@ const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 const db = new sqlite.Database(filebuffer);
 
 const app = express();
-const pg = require('pg');
 
 // Require the driver.
 var pg = require('pg');
@@ -164,7 +163,7 @@ app.get('/api/food', (req, res) => {
   }
 });
 
-app.post('/sign-up', (req, res)=> {
+app.post( '/sign-up', (req, res)=> {
         console.log( 'sign up');
         passport.authenticate('local-signup', {
             successRedirect: '/',
