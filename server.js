@@ -7,7 +7,7 @@ const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 const db = new sqlite.Database(filebuffer);
 
 const app = express();
-const pg = require('pg');
+const passport = require( './passport-login' );
 
 // Require the driver.
 var pg = require('pg');
@@ -123,12 +123,15 @@ app.post('/userPref', function(req, res){
     }
 });
 
+app.post('/sign-up', (req, res)=> {
+        console.log( 'sign up');
+        passport.authenticate('local-signup', {
+            successRedirect: '/',
+            failureRedirect: '/sign-up'
+        });
+    }
+);
 
-<<<<<<< HEAD
-
-//REMOVE THIS, NOT OUR STUFF BELOW
-=======
->>>>>>> matin
 app.get('/api/food', (req, res) => {
   const param = req.query.q;
 
