@@ -39,12 +39,13 @@ class SignUpComponent extends React.Component {
     };
 
     handleSubmit = () => {
-        this.props.loggedIn();
+        //this.props.loggedIn();
         // put endpoint in uri
 
+        /*
         var options = {
             method: 'POST',
-            uri: 'localhost:3000/sign-up',
+            url: 'http://localhost:3001/sign-up',
             body: {
                 email: this.state.email,
                 username: this.state.username,
@@ -53,13 +54,40 @@ class SignUpComponent extends React.Component {
             json: true // Automatically stringifies the body to JSON
         };
 
+        var self = this;
         rp(options)
             .then(function (parsedBody) {
-                this.setState({open: false});
+                self.setState({open: false});
+                console.log('here');
+
+
             })
             .catch(function (err) {
-                this.setState({open: true});
-        });
+                console.log(err);
+                self.setState({open: true});
+        });*/
+
+        return fetch(`http://localhost:3001/sign-up`, {
+            method: 'post',
+            body: JSON.stringify({
+                email: 'hey'
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (resp) {
+                if (resp.status === 200) {
+                    return resp.json();
+                } else {
+                    throw new Error(`HTTP Error ${resp.statusText}`);
+                }
+            })
+            .then(function (data) {
+                console.log(data);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     };
 
     render () {

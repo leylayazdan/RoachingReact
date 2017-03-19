@@ -7,12 +7,23 @@ const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 const db = new sqlite.Database(filebuffer);
 
 const app = express();
+const bodyParser = require( 'body-parser')
 
 // Require the driver.
 var pg = require('pg');
 
 var connectionString = process.env.DATABASE_URL || 'postgresql://root@localhost:26257?sslmode=disable';
 var client = new pg.Client(connectionString);
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+};
+
+app.use(allowCrossDomain);
+app.use( bodyParser());
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -165,10 +176,12 @@ app.get('/api/food', (req, res) => {
 
 app.post( '/sign-up', (req, res)=> {
         console.log( 'sign up');
-        passport.authenticate('local-signup', {
-            successRedirect: '/',
-            failureRedirect: '/sign-up'
-        });
+        //passport.authenticate('local-signup', {
+            //successRedirect: '/',
+            //failureRedirect: '/sign-up'
+        //});
+    console.log( JSON.stringify( req.body ));
+        return res.status(400).json({success: true, data: 'hello'}).send();
     }
 );
 
