@@ -1,19 +1,27 @@
 const express = require('express');
 const fs = require('fs');
 const sqlite = require('sql.js');
-
-const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
-
-const db = new sqlite.Database(filebuffer);
+const uuid = require( 'uuid' );
 
 const app = express();
-const pg = require('pg');
+const bodyParser = require( 'body-parser');
+
 
 // Require the driver.
 var pg = require('pg');
 
 var connectionString = process.env.DATABASE_URL || 'postgresql://root@localhost:26257?sslmode=disable';
 var client = new pg.Client(connectionString);
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+};
+
+app.use(allowCrossDomain);
+app.use( bodyParser());
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -123,3 +131,133 @@ app.post('/userPref', function(req, res){
     }
 });
 
+app.get('/api/food', (req, res) => {
+  const param = req.query.q;
+
+  if (!param) {
+    res.json({
+      error: 'Missing required parameter `q`',
+    });
+    return;
+  }
+
+  // WARNING: Not for production use! The following statement
+  // is not protected against SQL injections.
+  const r = db.exec(`
+    select ${COLUMNS.join(', ')} from entries
+    where description like '%${param}%'
+    limit 100
+  `);
+
+  if (r[0]) {
+    res.json(
+      r[0].values.map((entry) => {
+        const e = {};
+        COLUMNS.forEach((c, idx) => {
+          // combine fat columns
+          if (c.match(/^fa_/)) {
+            e.fat_g = e.fat_g || 0.0;
+            e.fat_g = (
+              parseFloat(e.fat_g, 10) + parseFloat(entry[idx], 10)
+            ).toFixed(2);
+          } else {
+            e[c] = entry[idx];
+          }
+        });
+        return e;
+      }),
+    );
+  } else {
+    res.json([]);
+  }
+});
+
+app.post( '/logIn', function( req, res ){
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    pg.connect( config, function( err, client, done ){
+
+        var query = client.query( `SELECT * FROM healthi.user where username='${username}';` );
+
+        query.on( 'error', ( err )=>{
+
+            return res.status( 500 ).json( { success: false, statusText: 'application error' } );
+
+        });
+
+        let user;
+
+        query.on( 'row', ( row )=>{
+
+            user = row;
+
+        } );
+
+        query.on( 'end', ()=>{
+
+            if( !user ){
+
+                return res.status( 500 ).json( { success: false, statusText: 'user does not exist' } );
+            }
+
+            console.log( user.password );
+            console.log( password );
+            if( user.password === password ){
+
+                return res.status(200).json({ success: true, statusText: 'successfully logged in', user: user } );
+            } else {
+
+                return res.status(500).json({ success: false, statusText: 'password incorrect'} );
+            }
+
+        } )
+    })
+
+});
+
+app.post( '/sign-up', function( req, res ){
+
+
+    const id = uuid.v4();
+    const username = req.body.username;
+    const password = req.body.password;
+
+    pg.connect( config, function( err, client, done ){
+
+       var query = client.query( `INSERT INTO healthi.user VALUES ('${id}','${username}','${password}', null, null, null, null);`);
+
+       query.on( 'error',( err )=>{
+
+           console.log( err );
+
+           if( err.code === '23505' )
+            return res.status(500).json( { success: false, statusText: 'username taken' } );
+           else
+            return res.status(500).json( { success: false, statusText: 'application error'})
+
+           } );
+
+       let retVal;
+
+      query.on('row', (row)=>{
+
+           retVal = row;
+       });
+
+      query.on('end',()=>{
+
+            res.status( 200 ).json({ success: true, user: retVal ? retVal : { id, username, password } });
+        })
+
+    });
+    }
+/*    console.log( JSON.stringify( req.body ));
+        return res.status(400).json({success: true, data: 'hello'}).send();*/
+
+);
+
+app.listen(app.get('port'), () => {
+  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+});

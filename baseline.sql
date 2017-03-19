@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS healthi.restaurant(
 );
 
 CREATE TABLE IF NOT EXISTS healthi.user (
-    id              INT PRIMARY KEY,
+    id              STRING PRIMARY KEY,
     username        STRING UNIQUE,
     password        STRING,
     name            STRING,
