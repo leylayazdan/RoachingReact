@@ -220,13 +220,19 @@ app.post( '/logIn', function( req, res ){
 app.post( '/sign-up', function( req, res ){
 
 
-    const id = uuid.v4();
-    const username = req.body.username;
-    const password = req.body.password;
+        const id = uuid.v4();
+        const username = req.body.username;
+        const password = req.body.password;
+        const email = req.body.email;
+        var dietaryRestriction = JSON.stringify(req.body.dietaryRestrictions);
+        var allergens = JSON.stringify(req.body.allergens);
+        const dietGoals = req.body.goal;
+
 
     pg.connect( config, function( err, client, done ){
 
-       var query = client.query( `INSERT INTO healthi.user VALUES ('${id}','${username}','${password}', null, null, null, null);`);
+       var query = client.query( `INSERT INTO healthi.user VALUES ('${id}','${username}','${password}', 
+        '${email}', '${dietaryRestriction}', '${dietGoals}', '${allergens}');`);
 
        query.on( 'error',( err )=>{
 

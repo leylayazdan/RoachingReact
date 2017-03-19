@@ -10,9 +10,10 @@ CREATE TABLE IF NOT EXISTS healthi.user (
     id              STRING PRIMARY KEY,
     username        STRING UNIQUE,
     password        STRING,
-    name            STRING,
+    email           STRING,
     dietRestriction STRING,
-    dietGoals       STRING
+    dietGoals       STRING,
+    allergens       STRING
 );
 
 CREATE TABLE IF NOT EXISTS healthi.foodItem (
@@ -25,6 +26,8 @@ CREATE TABLE IF NOT EXISTS healthi.foodItem (
     carbGram            FLOAT,
     calories            FLOAT,
     sodium              FLOAT,
-    dietRestriction     STRING
+    dietRestriction     STRING,
+    allergens           STRING,
+    picURL              STRING
 );
 
