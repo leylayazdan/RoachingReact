@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import SelectedFoods from './SelectedFoods';
-import FoodSearch from './FoodSearch';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SignUpModal from './components/sign-up-modal';
 import Background from '../assets/healthy_food.jpg';
 import LoginModal from './components/login-modal';
+import FoodItemsCard from './components/food-items-card'
 
 class App extends React.Component {
   constructor(props) {
@@ -63,7 +62,7 @@ class App extends React.Component {
 
   render() {
     if (!this.state.loggedIn) {
-      var sectionStyle = {
+      var sectionStyles = {
         height: "900px",
         backgroundSize: "cover",
         flex: 1,
@@ -78,20 +77,20 @@ class App extends React.Component {
 
       return (
           <div className='App'>
-            <section style={ sectionStyle }>
+            <section style={ sectionStyles }>
               <div className='ui text container'>
                 <div className="Buttons" style={{marginTop: '40%'}}>
                   <MuiThemeProvider>
-                    <div className="SignUpModal" style={buttonStyles}>
+                    <div className="SignUpModal" style={ buttonStyles }>
                       <SignUpModal
-                      loggedIn={this.login}
+                        loggedIn={ this.login }
                       />
                     </div>
                   </MuiThemeProvider>
                   <MuiThemeProvider>
-                    <div className="LoginModal" style={buttonStyles}>
+                    <div className="LoginModal" style={ buttonStyles }>
                       <LoginModal
-                        loggedIn={this.login}
+                        loggedIn={ this.login }
                       />
                   </div>
                   </MuiThemeProvider>
@@ -101,7 +100,15 @@ class App extends React.Component {
           </div>
       );
     }
-    return null;
+    return (
+      <div className="FoodItemsCard">
+        <MuiThemeProvider>
+          <FoodItemsCard
+            loggedIn={this.login}
+          />
+        </MuiThemeProvider>
+      </div>
+    );
   }
 }
 
