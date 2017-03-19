@@ -5,6 +5,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SignUpModal from './components/sign-up-modal';
 import Background from '../assets/healthy_food.jpg';
+import LoginModal from './components/login-modal';
+
 
 class App extends Component {
   constructor() {
@@ -52,6 +54,7 @@ class App extends Component {
 
 
   render() {
+    
     var sectionStyle = {
       height: "700px",
       backgroundSize: "cover",
@@ -59,14 +62,24 @@ class App extends Component {
       overflow: "hidden",
       backgroundImage: "url(" + Background + ")"
     };
+    
+    var buttonStyles = {
+      paddingBottom: '20px',
+      textAlign: 'center'
+    }
 
     return (
       <div className='App'>
         <section style={ sectionStyle }>
           <div className='ui text container'>
-            <MuiThemeProvider>
-              <SignUpModal />
-            </MuiThemeProvider>
+            <div className="Buttons">
+              <MuiThemeProvider>
+                <div className="SignUpModal" style={buttonStyles}><SignUpModal /></div>
+              </MuiThemeProvider>
+              <MuiThemeProvider>
+                <div className="LoginModal" style={buttonStyles}><LoginModal /></div>
+              </MuiThemeProvider>
+            </div>
           </div>
         </section>
       </div>
