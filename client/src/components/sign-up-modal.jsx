@@ -67,7 +67,7 @@ class SignUpComponent extends React.Component {
                 self.setState({open: true});
         });*/
 
-        return fetch(`http://localhost:3001/sign-up`, {
+        return fetch(`/sign-up`, {
             method: 'post',
             body: JSON.stringify({
                 email: this.state.email,
