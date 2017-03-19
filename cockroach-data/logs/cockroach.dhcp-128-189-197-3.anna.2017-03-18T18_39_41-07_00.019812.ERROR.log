@@ -1,7 +1,0 @@
-E170318 18:39:41.198666 41 util/log/clog.go:1017  [config] file created at: 2017/03/18 18:39:41
-E170318 18:39:41.198666 41 util/log/clog.go:1017  [config] running on machine: dhcp-128-189-197-3
-E170318 18:39:41.198666 41 util/log/clog.go:1017  [config] binary: CockroachDB CCL beta-20170309 (darwin amd64, built 2017/03/09 16:34:35, go1.8)
-E170318 18:39:41.198666 41 util/log/clog.go:1017  [config] arguments: [cockroach start]
-E170318 18:39:41.198666 41 util/log/clog.go:1017  line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid file:line msg utf8=✓
-E170318 18:39:41.198665 41 server/status/runtime.go:187  unable to get file descriptor usage (will not try again): not implemented on darwin
-E170318 18:49:31.252189 138 storage/queue.go:708  [n1,replicate] 10 replicas failing with "0 of 0 stores with all attributes matching []; likely not enough nodes in cluster"
