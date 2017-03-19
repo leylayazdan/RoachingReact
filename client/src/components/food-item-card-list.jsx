@@ -1,5 +1,6 @@
 import React from 'react';
 import FoodItemsCard from './food-items-card';
+import Divider from 'material-ui/Divider';
 
 export default class FoodItemsCardList extends React.Component {
 
@@ -16,7 +17,15 @@ export default class FoodItemsCardList extends React.Component {
     return (
       <div className="FoodItemsCardList">
         <FoodItemsCard />
+        <Divider inset={true} />
         <FoodItemsCard />
+        <Divider inset={true} />
+        <FoodItemsCard />
+        <Divider inset={true} />
+        <FoodItemsCard />
+        <Divider inset={true} />
+        <FoodItemsCard />
+        <Divider inset={true} />
       </div>
     );
   }
