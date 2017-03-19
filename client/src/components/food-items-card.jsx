@@ -16,10 +16,6 @@ export default class FoodItemsCard extends React.Component {
     this.setState({expanded: expanded});
   };
 
-  handleToggle = (event, toggle) => {
-    this.setState({expanded: toggle});
-  };
-
   handleExpand = () => {
     this.setState({expanded: true});
   };
@@ -27,6 +23,8 @@ export default class FoodItemsCard extends React.Component {
   handleReduce = () => {
     this.setState({expanded: false});
   };
+
+
 
   render() {
 
