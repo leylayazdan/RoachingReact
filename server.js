@@ -215,6 +215,42 @@ app.post( '/sign-up', function( req, res ){
 
 );
 
+//USER
+//posting each preference for food on SIGNUP for USER
+//save things as JSON object, which we can stringify and SAVE in table, then when retrieved
+//it can be turned back into a json object
+app.post('/preferences', function(req, res){
+    try{
+        // Grab data from http request
+        var faveCuisine = JSON.stringify(req.body.faveCuisine);
+        var dietRestriction = JSON.stringify(req.body.dietRestriction);
+        var dietGoals = JSON.stringify(req.body.dietGoals);
+        let userId = req.headers.user.userId;
+
+        // Get a Postgres client from the connection pool
+        pg.connect( config, function( err, client, done ){
+            var query = client.query( `UPDATE healthi.user SET faveCuisine = '${faveCuisine}', dietRestriction = '${dietRestriction}',
+                                                              dietGoals = '${dietGoals}' WHERE id = '${userId}'`);
+            query.on( 'error',( err )=>{
+                console.log( err );
+                if( err )
+                    return res.status(500).json({ success: false, statusText: err } );
+            });
+            let retVal;
+            query.on('row', (row)=>{
+                retVal = row;
+            });
+            query.on('end',()=>{
+                res.status( 200 ).json({ success: true, data: retVal ? retVal : {} });
+            })
+        });
+    } catch (ex) {
+        callback(ex);
+    }
+});
+
+
+
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
