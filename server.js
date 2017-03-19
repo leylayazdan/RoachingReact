@@ -7,6 +7,7 @@ const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 const db = new sqlite.Database(filebuffer);
 
 const app = express();
+const pg = require('pg');
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -25,12 +26,21 @@ const COLUMNS = [
   'description',
 ];
 
+var config = {
+    user: 'maxroach',
+    host: 'localhost',
+    database: 'healthi',
+    port: 26257
+};
+
 //FOOD
 //GET food item suggestions from foodTable
 app.get('/foodSuggestions', function(req, res){
     try{
+
+        console.log( 'call food suggestions!!!!' );
         // Get a Postgres client from the connection pool
-        pg.connect(connectionString, function(err, client, done) {
+        pg.connect( config, function(err, client, done) {
             // Handle connection errors
             if(err) {
                 done();
@@ -48,6 +58,7 @@ app.get('/foodSuggestions', function(req, res){
             });
 
             query.on('end', function() {
+                console.log( 'foodItems:', JSON.stringify( foodItems ) );
                 res.send(foodItems);
             });
 
@@ -58,7 +69,7 @@ app.get('/foodSuggestions', function(req, res){
             });
         });
     } catch (ex) {
-        callback(ex);
+        console.log( ex );
     }
 });
 
@@ -67,7 +78,7 @@ app.post('/userPref', function(req, res){
     try{
         //ANNA PUT YOUR STUFF HERE
     } catch (ex) {
-        callback(ex);
+
     }
 });
 
