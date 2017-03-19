@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import SelectedFoods from './SelectedFoods';
-import FoodSearch from './FoodSearch';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SignUpModal from './components/sign-up-modal';
 import Background from '../assets/healthy_food.jpg';
 import LoginModal from './components/login-modal';
+import FoodItemsList from './components/food-items-list'
 
 class App extends React.Component {
   constructor(props) {
