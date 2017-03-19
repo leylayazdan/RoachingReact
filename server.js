@@ -8,7 +8,6 @@ const db = new sqlite.Database(filebuffer);
 
 const app = express();
 
-var async = require("async");
 // Require the driver.
 var pg = require('pg');
 
@@ -34,7 +33,7 @@ const COLUMNS = [
 
 //FOOD
 //GET food item suggestions from foodTable
-router.get('/foodSuggestions', function(req, res){
+app.get('/foodSuggestions', function(req, res){
     try{
         // Get a Postgres client from the connection pool
         pg.connect(connectionString, function(err, client, done) {

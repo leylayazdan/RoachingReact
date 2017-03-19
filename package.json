@@ -7,6 +7,7 @@
     "babel-core": "6.14.0",
     "express": "4.13.3",
     "fs": "0.0.2",
+    "pg": "^6.1.4",
     "sql.js": "0.3.2"
   },
   "scripts": {
@@ -16,7 +17,7 @@
     "setup": "npm i && cd client && npm i && cd ..",
     "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
     "lint": "eslint .",
-    "postinstall" : "cd client && npm install && npm run build && cd .."
+    "postinstall": "cd client && npm install && npm run build && cd .."
   },
   "devDependencies": {
     "concurrently": "3.1.0",
