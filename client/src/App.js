@@ -4,7 +4,9 @@ import FoodSearch from './FoodSearch';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import SignUpModal from './components/sign-up-modal';
+import Background from '../assets/healthy_food.jpg';
 import LoginModal from './components/login-modal';
+
 
 class App extends Component {
   constructor() {
@@ -49,14 +51,26 @@ class App extends Component {
     );
   } */
 
+
+
   render() {
+    
+    var sectionStyle = {
+      height: "700px",
+      backgroundSize: "cover",
+      flex: 1,
+      overflow: "hidden",
+      backgroundImage: "url(" + Background + ")"
+    };
+    
     var buttonStyles = {
       paddingBottom: '20px',
       textAlign: 'center'
     }
 
     return (
-        <div className='App'>
+      <div className='App'>
+        <section style={ sectionStyle }>
           <div className='ui text container'>
             <div className="Buttons">
               <MuiThemeProvider>
@@ -67,7 +81,8 @@ class App extends Component {
               </MuiThemeProvider>
             </div>
           </div>
-        </div>
+        </section>
+      </div>
     );
   }
 }
